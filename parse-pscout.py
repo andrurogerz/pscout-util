@@ -13,7 +13,7 @@ def add_api_call(output_path, class_name, method_signature, permission):
   # determine the output path based on the class name
   path_nodes = class_name.split('.')
   for i in range(len(path_nodes) - 1):
-    output_path = os.path.join(output_path, path_nodes[i]) 
+    output_path = os.path.join(output_path, path_nodes[i])
   if not os.path.exists(output_path):
     os.makedirs(output_path)
   output_path = os.path.join(output_path, 'annotations.xml')
@@ -22,7 +22,7 @@ def add_api_call(output_path, class_name, method_signature, permission):
   # load existing xml if it exists
   if os.path.exists(output_path):
     parser = ET.XMLParser(remove_blank_text = True)
-    xml_tree = ET.parse(output_path, parser) 
+    xml_tree = ET.parse(output_path, parser)
     xml_root = xml_tree.getroot()
   else:
     print 'creating {0}'.format(output_path)
@@ -38,10 +38,10 @@ def add_api_call(output_path, class_name, method_signature, permission):
   annotation_name = 'android.support.annotation.RequiresPermission'
   annotation_elem = ET.SubElement(item_elem, 'annotation', name=annotation_name)
 
-  # add the sub-node for the specific permission name 
+  # add the sub-node for the specific permission name
   value_name = '"{0}"'.format(permission)
   ET.SubElement(annotation_elem, 'val', name='value', val=value_name)
-  
+
   # write the updated xml
   outfile.write(ET.tostring(xml_root, encoding = 'UTF-8', xml_declaration = True, pretty_print = True))
   outfile.close()
@@ -58,4 +58,4 @@ for line in open(infile_name, 'r'):
   else:
     match = re.match(r'^<(\S+):\s+(.+)>$', line, 0)
     if (match):
-      add_api_call('platform-tools', match.group(1), match.group(2), current_permission)
+      add_api_call(outpath_name, match.group(1), match.group(2), current_permission)
